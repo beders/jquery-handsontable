@@ -217,7 +217,17 @@ Handsontable.TableView = function (instance) {
         instance.selection.setRangeEnd(coords);
       }
       else {
-        instance.selection.setRangeStart(coords);
+        if(coords.row < 0 || coords.col < 0) {
+          if (coords.row < 0) {
+            instance.selectCell(0,coords.col,this.instance.wtTable.rowStrategy.cellCount - 1,coords.col)
+          }
+          if (coords.col < 0) {
+            instance.selectCell(coords.row,0,coords.row,this.instance.wtTable.columnStrategy.cellCount - 1)
+          }
+        }
+        else {
+          instance.selection.setRangeStart(coords);
+        }
       }
 
       Handsontable.hooks.run(instance, 'afterOnCellMouseDown', event, coords, TD);
